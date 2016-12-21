@@ -1,4 +1,4 @@
-angular.module('thinkster.stocks.controllers').controller('StocksController',
+angular.module('greenfire.stocks.controllers').controller('StocksController',
   ['$scope', '$location', 'AuthService', 'StocksService',
   function ($scope, $location, AuthService, StocksService) {
 

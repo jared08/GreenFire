@@ -2,7 +2,7 @@
   'use strict';
   
   angular
-    .module('thinkster.utils.services')
+    .module('greenfire.utils.services')
     .factory('Snackbar', Snackbar);
 
   function Snackbar() {

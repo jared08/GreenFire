@@ -1,4 +1,4 @@
-angular.module('thinkster.stocks.services').factory('StocksService',
+angular.module('greenfire.stocks.services').factory('StocksService',
   ['$http',
   function ($http) {   
     

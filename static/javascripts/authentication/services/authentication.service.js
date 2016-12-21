@@ -1,4 +1,4 @@
-angular.module('thinkster.authentication.services').factory('AuthService',
+angular.module('greenfire.authentication.services').factory('AuthService',
   ['$q', '$timeout', '$http',
   function ($q, $timeout, $http) {
 

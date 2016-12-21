@@ -1,4 +1,4 @@
-angular.module('thinkster.authentication.controllers').controller('LoginController',
+angular.module('greenfire.authentication.controllers').controller('LoginController',
   ['$scope', '$location', 'AuthService',
   function ($scope, $location, AuthService) {
  

@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('thinkster.stocks.directives')
+    .module('greenfire.stocks.directives')
     .directive('stocks', stocks);
 
   function stocks() {

@@ -2,11 +2,11 @@
   'use strict';
 
   angular
-    .module('thinkster.utils', [
-      'thinkster.utils.services'
+    .module('greenfire.utils', [
+      'greenfire.utils.services'
     ]);
 
   angular
-    .module('thinkster.utils.services', []);
+    .module('greenfire.utils.services', []);
 
 })();

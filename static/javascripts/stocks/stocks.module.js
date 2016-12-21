@@ -2,23 +2,23 @@
   'use strict';
 
   angular
-    .module('thinkster.stocks', [
-      'thinkster.stocks.controllers',
-      'thinkster.stocks.directives',
-      'thinkster.stocks.services',
-      'thinkster.mystocks.services',
+    .module('greenfire.stocks', [
+      'greenfire.stocks.controllers',
+      'greenfire.stocks.directives',
+      'greenfire.stocks.services',
+      'greenfire.mystocks.services',
     ]);
 
   angular
-    .module('thinkster.stocks.controllers', []);
+    .module('greenfire.stocks.controllers', []);
 
   angular
-    .module('thinkster.stocks.directives', ['ngDialog']);
+    .module('greenfire.stocks.directives', ['ngDialog']);
 
   angular
-    .module('thinkster.stocks.services', []);
+    .module('greenfire.stocks.services', []);
 
   angular
-    .module('thinkster.mystocks.services', []);
+    .module('greenfire.mystocks.services', []);
 
 })();

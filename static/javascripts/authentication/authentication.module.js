@@ -2,14 +2,14 @@
   'use strict';
 
   angular
-    .module('thinkster.authentication', [
-      'thinkster.authentication.controllers',
-      'thinkster.authentication.services'
+    .module('greenfire.authentication', [
+      'greenfire.authentication.controllers',
+      'greenfire.authentication.services'
     ]);
 
   angular
-    .module('thinkster.authentication.controllers', []);
+    .module('greenfire.authentication.controllers', []);
 
   angular
-    .module('thinkster.authentication.services', ['ngCookies']);
+    .module('greenfire.authentication.services', ['ngCookies']);
 })();
