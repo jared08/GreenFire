@@ -1,0 +1,45 @@
+<!--<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <h1>Login</h1>
+
+    <div class="well">
+      <form role="form" ng-submit="vm.login()">
+        <div class="alert alert-danger" ng-show="error" ng-bind="error"></div>
+
+        <div class="form-group">
+          <label for="login__email">Email</label>
+          <input type="text" class="form-control" id="login__email" ng-model="vm.email" placeholder="ex. john@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="login__password">Password</label>
+          <input type="password" class="form-control" id="login__password" ng-model="vm.password" placeholder="ex. password" />
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div> --!>
+<div class="col-md-4">
+  <h1>Login</h1>
+  <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
+  <form class="form" >
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" class="form-control" name="email" ng-model="loginForm.email" required>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+        <input type="password" class="form-control" name="password" ng-model="loginForm.password" required>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-default" ng-controller="LoginController" ng-click="login()" ng-disabled="disabled">Login</button>
+      </div>
+  </form>
+  <br>
+  <a href="http:/register">Click here to register.</a>
+</div>

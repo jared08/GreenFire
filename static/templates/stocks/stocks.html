@@ -1,0 +1,36 @@
+<div class="row" ng-controller="StocksController">
+  <label>List of all stocks</label>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>         
+        <th>Price</th>      
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="stock in stocklist">
+        <td>{{stock.name}}</td>
+        <td>{{stock.price}}</td>
+	<td><button class="btn btn-primary" ng-click="buyStock(stock)">Buy</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <label>My stocks</label>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="stock in mystocklist">
+        <td>{{stock.name}}</td>
+        <td>{{stock.price}}</td>
+	<td><button class="btn btn-danger" ng-click="sellStock(stock)">Sell</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

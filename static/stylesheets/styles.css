@@ -1,0 +1,15 @@
+.no-stocks-here {
+  text-align: center;
+}
+
+.stock {}
+
+.stock .stock__meta {
+  font-weight: bold;
+  text-align: right;
+  padding-bottom: 19px;
+}
+
+.stock .stock__meta a:hover {
+  text-decoration: none;
+}
