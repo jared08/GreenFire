@@ -29,7 +29,7 @@ angular.module('greenfire.stocks.services').factory('StocksService',
             });
     }
 
-     function sell(username, stock) {
+    function sell(username, stock) {
       return $http.put('/api/v1/mystocks/',
         {username: username, stock: stock, method: 'sell'})
         .then(function(response) {
@@ -37,11 +37,22 @@ angular.module('greenfire.stocks.services').factory('StocksService',
             });
     }
 
+    function add(name, price) {
+      return $http.post('/api/v1/stocks/',
+        {name: name, price: price})
+        .then(function(response) {
+              return response.data;
+            });
+    }
+
+
+
     return ({
       allStocks: allStocks,
       myStocks: myStocks,
       buy: buy,
       sell: sell,
+      add: add,
     }); 
 
 }]);

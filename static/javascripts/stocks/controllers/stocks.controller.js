@@ -2,6 +2,8 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
   ['$scope', '$location', 'AuthService', 'StocksService',
   function ($scope, $location, AuthService, StocksService) {
 
+    $scope.is_admin = AuthService.isAdmin();
+
     var getAllStocks = function () {
       StocksService.allStocks()
         .then(function (data) {
@@ -67,6 +69,25 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
          });
 
     }
+  
+    //for british eyes only
+    $scope.addStock = function () {
+	console.log('new stock to be added: ' + $scope.new_stock.name + ' at: ' + $scope.new_stock.price);
+        StocksService.add($scope.new_stock.name, $scope.new_stock.price)
+         .then(function (data) {
+           $scope.disabled = false;
+           getAllStocks();
+         })
+         .catch(function () {
+           console.log('ERROR!!!');
+           getMyStocks();
+           $scope.error = true;
+           $scope.errorMessage = "Unable to add stock..";
+           $scope.disabled = false;
+         });
+
+    }
+
 
 
     

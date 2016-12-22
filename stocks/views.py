@@ -11,7 +11,17 @@ from stocks.serializers import StockSerializer
 
 class StockViewSet(viewsets.ModelViewSet):
    queryset = Stock.objects.order_by('name')
+   print(queryset)
    serializer_class = StockSerializer
+
+   def create(self, request):
+      stock_name = request.data.get('name', '')
+      stock_price = request.data.get('price', '')
+
+      stock = Stock.objects.create(name=stock_name, price=stock_price)
+      serialized_stock = StockSerializer(stock)
+
+      return Response(serializer.data)
 
 class AccountStocksViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.select_related('username').all()
