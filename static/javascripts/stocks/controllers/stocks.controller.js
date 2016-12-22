@@ -72,7 +72,6 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
   
     //for british eyes only
     $scope.addStock = function () {
-	console.log('new stock to be added: ' + $scope.new_stock.name + ' at: ' + $scope.new_stock.price);
         StocksService.add($scope.new_stock.name, $scope.new_stock.price)
          .then(function (data) {
            $scope.disabled = false;
@@ -88,7 +87,18 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 
     }
 
+    var stock_to_change;
+    $scope.setStock = function (stock) {
+	stock_to_change = stock
+    }
 
+    $scope.editStock = function() {
+	console.log('trying to edit: ' + stock_to_change.name + ' to: ' + $scope.stock.new_name);
+    }
+
+    $scope.deleteStock = function() {
+	console.log('trying to delete: ' + stock_to_change.name);
+    }
 
     
 
