@@ -37,6 +37,8 @@ class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=40, blank=True)
     last_name = models.CharField(max_length=40, blank=True)
 
+    cash = models.IntegerField(default=25000)
+
     stocks = models.ManyToManyField(Stock)
 
     is_admin = models.BooleanField(default=False)

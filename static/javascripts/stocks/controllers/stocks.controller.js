@@ -22,12 +22,12 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
     var getMyStocks = function () {
       StocksService.myStocks(username)
 	.then(function (data) {
-	  console.log('data from getMySTocks: ' + data[0].stocks);
-
+	  $scope.cash = AuthService.getCash();
+	  var value = $scope.cash;
 	  for (var i = 0; i < data[0].stocks.length; i++) {
-		console.log(data[0].stocks[i]);
+	    value = value + (data[0].stocks[i].quantity * data[0].stocks[i].price);
 	  }
-
+	  $scope.value = value;	
 	  $scope.mystocklist = data[0].stocks;
 	  $scope.disabled = false;
 	})
@@ -42,6 +42,10 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
     getMyStocks();
 
     $scope.buyStock = function () {
+	if (!$scope.stock) {
+	  console.log('you didnt add a quantity?')
+	  return;
+	}
 	stock_to_change.quantity = $scope.stock.quantity;
 	StocksService.buy(username, stock_to_change)
          .then(function (data) {
@@ -58,9 +62,14 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 
     }
 
-    $scope.sellStock = function (stock) {
-	console.log(stock.name);
-        StocksService.sell(username, stock)
+    $scope.sellStock = function () {
+	 if (!$scope.stock) {
+          console.log('you didnt add a quantity?')
+          return;
+        }
+	stock_to_change.quantity = $scope.stock.quantity;
+	console.log('trying to sell: ' + stock_to_change);
+        StocksService.sell(username, stock_to_change)
          .then(function (data) {
            $scope.disabled = false;
            getMyStocks();

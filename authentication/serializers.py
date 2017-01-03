@@ -9,13 +9,12 @@ class AccountSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
     confirm_password = serializers.CharField(write_only=True, required=False)
 
-    #stocks = StockSerializer(many=True, read_only=False, required=False)
     stocks = StockSerializer(many=True)    
 
     class Meta:
         model = Account
         fields = ('id', 'email', 'username', 'created_at', 'updated_at',
-                  'first_name', 'last_name', 'stocks', 'password',
+                  'first_name', 'last_name', 'cash', 'stocks', 'password',
                   'confirm_password', 'is_admin',)
         read_only_fields = ('created_at', 'updated_at',)
         def create(self, validated_data):

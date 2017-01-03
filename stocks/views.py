@@ -62,30 +62,39 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
     def put(self, request):
 	method = request.data.get('method', '')
 	if (method == 'buy'):
-	   print('TRYING TO BUY')
 	   username = request.data.get('username', '')
 	   account = Account.objects.get(email=username)
-	   print(account)
+
            stock = request.data.get('stock', '')
            stock_name = stock.get('name', '')
 	   quantity = stock.get('quantity', '')
 
-           new_stock = Stock.objects.get(name=stock_name)
-	   print('before')
-	   print(quantity)
-	   new_stock.quantity = quantity
-	   new_stock.save()
-	   print('after')
-	   print(new_stock.quantity)
+	   #eventually lock
+	   stock_from_db = Stock.objects.get(name=stock_name)
+	   price = stock_from_db.price;
+	   #eventually unlock
 
-	   print('before')
-	   print(account.stocks.all())
-           account.stocks.add(new_stock)
-	   print('after')
-           print(account.stocks.all())
-           account.save()
-	   print('account saved')
+	   #aka user already owns that stock and is buying more
+	   if (account.stocks.filter(name=stock_name)):
+	     temp = account.stocks.filter(name=stock_name)
+	     new_quantity = temp[0].quantity + quantity
 
+	     account.stocks.filter(name=stock_name).update(quantity=new_quantity)
+	     account.save()
+	   else:
+	     new_stock = Stock.objects.get(name=stock_name)
+             new_stock.quantity = quantity
+             new_stock.save()
+	   
+             account.stocks.add(new_stock)
+	     account.save()
+	
+	   total = quantity * price
+
+	   account.cash = account.cash - total;
+	   account.save()
+
+	   #not sure about this..
            queryset = self.queryset.filter(email=username)
 	   print(queryset)
            serializer = self.serializer_class(queryset)
@@ -96,23 +105,33 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
            return Response(serializer.data)
 
 	else:
-	   print('TRYING TO SELL')
            username = request.data.get('username', '')
-           stock = request.data.get('stock', '')
-
            account = Account.objects.get(email=username)
 
-           stock_name = stock.get('name', '')
-           new_stock = Stock.objects.get(name=stock_name)
+	   stock_data = request.data.get('stock', '')
+           stock_name = stock_data.get('name', '')
+	   quantity = stock_data.get('quantity', '')
 
-	   print('before')
-	   print(account.stocks.all())
-	   account.stocks.remove(new_stock)
-	   print('after')
-	   print(account.stocks.all())
-	   #account.save()
-	   print('account saved')	
+	   #eventually lock
+           stock_from_db = Stock.objects.get(name=stock_name)
+           price = stock_from_db.price;
+           #eventually unlock
 
+	   #aka not selling all of the stock
+	   if (account.stocks.filter(name=stock_name)[0].quantity > quantity):
+	     account.stocks.filter(name=stock_name)[0].update(quantity=new_quantity)
+	     account.save()
+	   else:
+	     stock = Stock.objects.get(name=stock_name)
+	     account.stocks.remove(stock)
+	     account.save()
+
+	   total = quantity * price
+
+	   account.cash = account.cash + total
+	   account.save()
+
+	   #not sure about this..
 	   queryset = self.queryset.filter(email=username)
 	   print(queryset)
 	   serializer = self.serializer_class(queryset)

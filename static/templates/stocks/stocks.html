@@ -32,6 +32,8 @@
     <button class="btn btn-success" data-toggle="modal" data-target="#addStockModal">Add Stock</button>
   </div>
 
+  <h3>Available funds: {{cash}}</h3>
+  <h3>Account value: {{value}}</h3>
   <label>My stocks</label>
   <table class="table">
     <thead>
@@ -46,7 +48,7 @@
         <td>{{stock.name}}</td>
 	<td>{{stock.quantity}}</td>
         <td>{{stock.price}}</td>
-	<td><button class="btn btn-danger" ng-click="sellStock(stock)">Sell</button></td>
+	<td><button class="btn btn-danger" ng-click="setStock(stock)" data-toggle="modal" data-target="#sellStockModal">Sell</button></td>
       </tr>
     </tbody>
   </table>
@@ -69,6 +71,26 @@
       </div>
     </div>
   </div>
+
+    <div class="modal" id="sellStockModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Buy Stock</h4>
+        </div>
+        <div class="modal-body">
+          <label>Quantity</label>
+          <input type="number" class="form-control" name="price" ng-model="stock.quantity" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="sellStock()">Sell</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <div class="modal" id="addStockModal" role="dialog">
     <div class="modal-dialog modal-lg">

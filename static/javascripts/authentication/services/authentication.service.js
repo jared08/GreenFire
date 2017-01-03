@@ -3,6 +3,7 @@ angular.module('greenfire.authentication.services').factory('AuthService',
   function ($q, $timeout, $http) {
 
     var account_email;
+    var account_cash;
     var admin = false;
 
     function register(email, password, username) {
@@ -19,6 +20,7 @@ angular.module('greenfire.authentication.services').factory('AuthService',
         {email: email, password: password})
         .then(function(response) {
 	    account_email = response.data.email;
+	    account_cash = response.data.cash;
 	    console.log(response.data);
 	    console.log(response.data.is_admin);
 	    admin = response.data.is_admin;
@@ -48,6 +50,10 @@ angular.module('greenfire.authentication.services').factory('AuthService',
     return account_email;
   }
 
+  function getCash() {
+    return account_cash;
+  }
+
   function isAdmin() {
     return admin;
   }
@@ -58,6 +64,7 @@ angular.module('greenfire.authentication.services').factory('AuthService',
 	login: login,
 	logout: logout,
 	getEmail: getEmail,
+	getCash: getCash,
 	isAdmin: isAdmin,
     }); 
 
