@@ -94,14 +94,8 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 	   account.cash = account.cash - total;
 	   account.save()
 
-	   #not sure about this..
            queryset = self.queryset.filter(email=username)
-	   print(queryset)
-           serializer = self.serializer_class(queryset)
-	   print(serializer)
-	   print('hey')
-	   print(serializer.is_valid())
-	   print(serializer.errors)
+           serializer = self.serializer_class(queryset[0])
            return Response(serializer.data)
 
 	else:
@@ -131,13 +125,7 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 	   account.cash = account.cash + total
 	   account.save()
 
-	   #not sure about this..
 	   queryset = self.queryset.filter(email=username)
-	   print(queryset)
-	   serializer = self.serializer_class(queryset)
-	   print(serializer)
-	   print('hey')
-	   print(serializer.errors)
-	   print('hey again')
+	   serializer = self.serializer_class(queryset[0])
 	   return Response(serializer.data)
 

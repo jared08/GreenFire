@@ -49,12 +49,17 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 	stock_to_change.quantity = $scope.stock.quantity;
 	StocksService.buy(username, stock_to_change)
          .then(function (data) {
+	   $scope.cash = data.cash;
+	   for (var i = 0; i < data.stocks.length; i++) {
+            value = value + (data.stocks[i].quantity * data.stocks[i].price);
+           }
+           $scope.value = value;
+           $scope.mystocklist = data.stocks;
+
            $scope.disabled = false;
-	   getMyStocks();
          })
          .catch(function () {
 	   console.log('ERROR~~');
-	   getMyStocks();
            $scope.error = true;
            $scope.errorMessage = "Unable to purchase..";
            $scope.disabled = false;
@@ -71,12 +76,17 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 	console.log('trying to sell: ' + stock_to_change);
         StocksService.sell(username, stock_to_change)
          .then(function (data) {
+	   $scope.cash = data.cash;
+           for (var i = 0; i < data.stocks.length; i++) {
+            value = value + (data.stocks[i].quantity * data.stocks[i].price);
+           }
+           $scope.value = value;
+           $scope.mystocklist = data.stocks;
+
            $scope.disabled = false;
-           getMyStocks();
          })
          .catch(function () {
 	   console.log('ERROR!!!');
-	   getMyStocks();
            $scope.error = true;
            $scope.errorMessage = "Unable to sell..";
            $scope.disabled = false;
