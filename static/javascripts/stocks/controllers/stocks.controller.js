@@ -50,6 +50,7 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 	StocksService.buy(username, stock_to_change)
          .then(function (data) {
 	   $scope.cash = data.cash;
+	   var value = $scope.cash;
 	   for (var i = 0; i < data.stocks.length; i++) {
             value = value + (data.stocks[i].quantity * data.stocks[i].price);
            }
@@ -77,6 +78,7 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
         StocksService.sell(username, stock_to_change)
          .then(function (data) {
 	   $scope.cash = data.cash;
+	   var value = $scope.cash;
            for (var i = 0; i < data.stocks.length; i++) {
             value = value + (data.stocks[i].quantity * data.stocks[i].price);
            }
