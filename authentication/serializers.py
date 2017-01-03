@@ -19,7 +19,7 @@ class AccountSerializer(serializers.ModelSerializer):
                   'confirm_password', 'is_admin',)
         read_only_fields = ('created_at', 'updated_at',)
         def create(self, validated_data):
-	    print('inside create!')
+	    print('inside the create serializer!')
 	    print(validated_data)
             return Account.objects.create(**validated_data)
 

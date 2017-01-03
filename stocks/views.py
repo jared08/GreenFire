@@ -11,17 +11,41 @@ from stocks.serializers import StockSerializer
 
 class StockViewSet(viewsets.ModelViewSet):
    queryset = Stock.objects.order_by('name')
-   print(queryset)
    serializer_class = StockSerializer
 
    def create(self, request):
-      stock_name = request.data.get('name', '')
-      stock_price = request.data.get('price', '')
+        stock_name = request.data.get('name', '')
+        stock_price = request.data.get('price', '')
 
-      stock = Stock.objects.create(name=stock_name, price=stock_price)
-      serialized_stock = StockSerializer(stock)
+        Stock.objects.create(name=stock_name, price=stock_price)
+	
+	queryset = self.queryset.filter(name=stock_name)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
-      return Response(serializer.data)
+ 
+
+   def put(self, request):
+	old_stock = request.data.get('stock', '')	
+	pk = old_stock.get('id', '')
+	new_name = request.data.get('new_name', '')
+
+	Stock.objects.filter(pk=pk).update(name=new_name)
+	
+	queryset = self.queryset.filter(pk=pk)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+   def delete(self, request):
+	stock = request.data.get('stock', '')
+	pk = stock.get('id', '')
+	Stock.objects.filter(pk=pk).delete()
+
+	queryset = self.queryset.filter()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
 
 class AccountStocksViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.select_related('username').all()

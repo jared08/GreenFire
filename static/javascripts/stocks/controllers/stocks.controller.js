@@ -89,15 +89,40 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 
     var stock_to_change;
     $scope.setStock = function (stock) {
-	stock_to_change = stock
+	stock_to_change = stock;
     }
 
     $scope.editStock = function() {
-	console.log('trying to edit: ' + stock_to_change.name + ' to: ' + $scope.stock.new_name);
+	StocksService.edit(stock_to_change, $scope.stock.new_name)
+         .then(function (data) {
+	   getAllStocks();
+           $scope.disabled = false;
+	   $scope.stock.new_name = '';
+         })
+         .catch(function () {
+           console.log('ERROR!!!');
+           $scope.error = true;
+           $scope.errorMessage = "Unable to add stock..";
+           $scope.disabled = false;
+         });
+
     }
 
     $scope.deleteStock = function() {
-	console.log('trying to delete: ' + stock_to_change.name);
+	StocksService.remove(stock_to_change)
+         .then(function (data) {
+           $scope.disabled = false;
+           getAllStocks();
+	   getMyStocks();
+         })
+         .catch(function () {
+           console.log('ERROR!!!');
+           getMyStocks();
+           $scope.error = true;
+           $scope.errorMessage = "Unable to add stock..";
+           $scope.disabled = false;
+         });
+
     }
 
     

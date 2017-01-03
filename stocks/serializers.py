@@ -6,5 +6,7 @@ class StockSerializer(serializers.ModelSerializer):
       model = Stock
 
       fields = ('id', 'name', 'price',)
-      read_only_fields = ('id', 'name',)
+      read_only_fields = ('id',)
 
+      def update(self, instance, validated_data):
+      	print('WOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
