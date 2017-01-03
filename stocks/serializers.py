@@ -5,8 +5,6 @@ class StockSerializer(serializers.ModelSerializer):
    class Meta:
       model = Stock
 
-      fields = ('id', 'name', 'price',)
+      fields = ('id', 'name', 'price', 'quantity',)
       read_only_fields = ('id',)
 
-      def update(self, instance, validated_data):
-      	print('WOOOOOOOOOOOOOOOOOOOOOOOOOOOO')

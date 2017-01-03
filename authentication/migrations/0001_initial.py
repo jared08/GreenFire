@@ -8,6 +8,7 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('stocks', '0001_initial'),
     ]
 
     operations = [
@@ -21,10 +22,10 @@ class Migration(migrations.Migration):
                 ('username', models.CharField(unique=True, max_length=40)),
                 ('first_name', models.CharField(max_length=40, blank=True)),
                 ('last_name', models.CharField(max_length=40, blank=True)),
-                ('tagline', models.CharField(max_length=140, blank=True)),
                 ('is_admin', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
+                ('stocks', models.ManyToManyField(to='stocks.Stock')),
             ],
             options={
                 'abstract': False,

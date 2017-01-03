@@ -7,14 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0002_auto_20161209_2013'),
+        ('stocks', '0002_auto_20170103_1842'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='account',
-            name='stocks',
-            field=models.ManyToManyField(to='stocks.Stock', blank=True),
+            model_name='stock',
+            name='quantity',
+            field=models.IntegerField(null=True),
             preserve_default=True,
         ),
     ]

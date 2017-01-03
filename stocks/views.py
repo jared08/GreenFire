@@ -68,14 +68,22 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 	   print(account)
            stock = request.data.get('stock', '')
            stock_name = stock.get('name', '')
+	   quantity = stock.get('quantity', '')
+
            new_stock = Stock.objects.get(name=stock_name)
+	   print('before')
+	   print(quantity)
+	   new_stock.quantity = quantity
+	   new_stock.save()
+	   print('after')
+	   print(new_stock.quantity)
 
 	   print('before')
 	   print(account.stocks.all())
            account.stocks.add(new_stock)
 	   print('after')
            print(account.stocks.all())
-           #account.save()
+           account.save()
 	   print('account saved')
 
            queryset = self.queryset.filter(email=username)

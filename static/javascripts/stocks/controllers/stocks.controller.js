@@ -22,6 +22,12 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
     var getMyStocks = function () {
       StocksService.myStocks(username)
 	.then(function (data) {
+	  console.log('data from getMySTocks: ' + data[0].stocks);
+
+	  for (var i = 0; i < data[0].stocks.length; i++) {
+		console.log(data[0].stocks[i]);
+	  }
+
 	  $scope.mystocklist = data[0].stocks;
 	  $scope.disabled = false;
 	})
@@ -35,10 +41,9 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
     getAllStocks();
     getMyStocks();
 
-    $scope.buyStock = function (stock) {
-        console.log(stock.name);
-	stock.quantity = 2;
-	StocksService.buy(username, stock)
+    $scope.buyStock = function () {
+	stock_to_change.quantity = $scope.stock.quantity;
+	StocksService.buy(username, stock_to_change)
          .then(function (data) {
            $scope.disabled = false;
 	   getMyStocks();
