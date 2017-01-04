@@ -124,7 +124,7 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 
 	   #eventually lock
            stock_from_db = Stock.objects.get(name=stock_name)
-           price = stock_from_db.price;
+           price = stock_from_db.current_price;
            #eventually unlock
 
 	   #aka not selling all of the stock

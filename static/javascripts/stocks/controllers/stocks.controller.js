@@ -56,7 +56,8 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
            }
            $scope.value = value;
            $scope.mystocklist = data.stocks;
-
+	
+	   $scope.stock.quantity = '';
            $scope.disabled = false;
          })
          .catch(function () {
@@ -85,6 +86,7 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
            $scope.value = value;
            $scope.mystocklist = data.stocks;
 
+	   $scope.stock.quantity = '';
            $scope.disabled = false;
          })
          .catch(function () {

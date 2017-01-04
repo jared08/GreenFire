@@ -42,6 +42,7 @@
 	<th>Quantity</th>
         <th>Price of Purchase</th>
 	<th>Current Price</th>
+	<th>Current Balance</th>
       </tr>
     </thead>
     <tbody>
@@ -50,6 +51,8 @@
 	<td>{{stock.quantity}}</td>
         <td>{{stock.price_of_purchase}}</td>
 	<td>{{stock.current_price}}</td>
+	<td>{{stock.current_price * stock.quantity}}</td>
+	<td><button class="btn btn-success" ng-click="setStock(stock)" data-toggle="modal" data-target="#buyStockModal">Buy</button></td>
 	<td><button class="btn btn-danger" ng-click="setStock(stock)" data-toggle="modal" data-target="#sellStockModal">Sell</button></td>
       </tr>
     </tbody>
@@ -64,11 +67,11 @@
         </div>
         <div class="modal-body">
           <label>Quantity</label>
-          <input type="number" class="form-control" name="price" ng-model="stock.quantity" required>
+          <input id="buy_input" type="number" class="form-control" name="price" ng-model="stock.quantity" required>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="buyStock()">Buy</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearBuyTotal()" ng-click="buyStock()">Buy</button>
         </div>
       </div>
     </div>
@@ -83,11 +86,11 @@
         </div>
         <div class="modal-body">
           <label>Quantity</label>
-          <input type="number" class="form-control" name="price" ng-model="stock.quantity" required>
+          <input id="sell_input" type="number" class="form-control" name="price" ng-model="stock.quantity" required>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="sellStock()">Sell</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal"  onclick="clearSellTotal()" ng-click="sellStock()">Sell</button>
         </div>
       </div>
     </div>
@@ -152,5 +155,5 @@
     </div>
   </div>
 
-
 </div>
+
