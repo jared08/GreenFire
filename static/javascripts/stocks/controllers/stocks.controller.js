@@ -25,7 +25,7 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 	  $scope.cash = AuthService.getCash();
 	  var value = $scope.cash;
 	  for (var i = 0; i < data[0].stocks.length; i++) {
-	    value = value + (data[0].stocks[i].quantity * data[0].stocks[i].price);
+	    value = value + (data[0].stocks[i].quantity * data[0].stocks[i].current_price);
 	  }
 	  $scope.value = value;	
 	  $scope.mystocklist = data[0].stocks;
@@ -52,7 +52,7 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 	   $scope.cash = data.cash;
 	   var value = $scope.cash;
 	   for (var i = 0; i < data.stocks.length; i++) {
-            value = value + (data.stocks[i].quantity * data.stocks[i].price);
+            value = value + (data.stocks[i].quantity * data.stocks[i].current_price);
            }
            $scope.value = value;
            $scope.mystocklist = data.stocks;
@@ -80,7 +80,7 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 	   $scope.cash = data.cash;
 	   var value = $scope.cash;
            for (var i = 0; i < data.stocks.length; i++) {
-            value = value + (data.stocks[i].quantity * data.stocks[i].price);
+            value = value + (data.stocks[i].quantity * data.stocks[i].current_price);
            }
            $scope.value = value;
            $scope.mystocklist = data.stocks;

@@ -17,7 +17,7 @@ class StockViewSet(viewsets.ModelViewSet):
         stock_name = request.data.get('name', '')
         stock_price = request.data.get('price', '')
 
-        Stock.objects.create(name=stock_name, price=stock_price)
+        Stock.objects.create(name=stock_name, current_price=stock_price)
 	
 	queryset = self.queryset.filter(name=stock_name)
         serializer = self.serializer_class(queryset, many=True)
@@ -71,16 +71,27 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 
 	   #eventually lock
 	   stock_from_db = Stock.objects.get(name=stock_name)
-	   price = stock_from_db.price;
+	   price = stock_from_db.current_price;
 	   #eventually unlock
 
 	   #aka user already owns that stock and is buying more
 	   if (account.stocks.filter(name=stock_name)):
-	     temp = account.stocks.filter(name=stock_name)
-	     new_quantity = temp[0].quantity + quantity
+	     old_quantity = account.stocks.filter(name=stock_name)[0].quantity
+	     new_quantity = old_quantity + quantity
 
 	     account.stocks.filter(name=stock_name).update(quantity=new_quantity)
 	     account.save()
+
+	     old_price_of_purchase = account.stocks.filter(name=stock_name)[0].price_of_purchase
+	     old_value = old_price_of_purchase * old_quantity
+	
+	     new_value = price * quantity
+
+	     calculated_price_of_purchase = (old_value + new_value) / (old_quantity + quantity) 
+	     account.stocks.filter(name=stock_name).update(price_of_purchase=calculated_price_of_purchase)
+	     account.save()
+
+
 	   else:
 	     new_stock = Stock.objects.get(name=stock_name)
              new_stock.quantity = quantity
@@ -88,6 +99,11 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 	   
              account.stocks.add(new_stock)
 	     account.save()
+
+	     account.stocks.filter(name=stock_name).update(price_of_purchase=price)
+	     account.save()
+
+	   
 	
 	   total = quantity * price
 
@@ -113,7 +129,10 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 
 	   #aka not selling all of the stock
 	   if (account.stocks.filter(name=stock_name)[0].quantity > quantity):
-	     account.stocks.filter(name=stock_name)[0].update(quantity=new_quantity)
+	     temp = account.stocks.filter(name=stock_name)
+             new_quantity = temp[0].quantity - quantity
+	     
+	     account.stocks.filter(name=stock_name).update(quantity=new_quantity)
 	     account.save()
 	   else:
 	     stock = Stock.objects.get(name=stock_name)
