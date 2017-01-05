@@ -7,14 +7,19 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">GreenFire</a>
+      <a class="navbar-brand" href="/home">GreenFire</a>
+
     </div> <!-- ./navbar-header -->
 
     <div class="collapse navbar-collapse" id="greenfire-nav">
+      <ul class="nav navbar-nav">
+	{% if user.is_authenticated %}
+          <li><a href="/home">Home</a></li>
+          <li><a href="/stocks">Stocks</a></li>
+	{% endif %}
+      </ul>
       <ul class="nav navbar-nav pull-right">
         {% if user.is_authenticated %}
-          <li><a href="/+{{ user.username }}">+{{ user.username }}</a></li>
-          <li><a href="/+{{ user.username }}/settings">Settings</a></li>
           <li><a href="javascript:void(0)" ng-click="vm.logout()">Logout</a></li>
         {% else %}
           <li><a href="/login">Login</a></li>

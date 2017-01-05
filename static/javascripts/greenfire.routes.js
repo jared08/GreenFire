@@ -17,6 +17,11 @@
       controllerAs: 'vm',
       templateUrl: '/static/templates/authentication/login.html'
     }).when('/home', {
+      controller: 'MyStocksController',
+      controllerAs: 'vm',
+      templateUrl: '/static/templates/stocks/mystocks.html',
+      access: {restricted: true}
+    }).when('/stocks', {
       controller: 'StocksController',
       controllerAs: 'vm',
       templateUrl: '/static/templates/stocks/stocks.html',

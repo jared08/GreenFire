@@ -10,8 +10,7 @@ angular.module('greenfire.authentication.controllers').controller('LoginControll
 
       AuthService.login($scope.loginForm.email, $scope.loginForm.password)
         // handle success
-        .then(function (data) {          
-          $location.path('/home');
+        .then(function (data) {    
           $scope.disabled = false;
           $scope.loginForm = {};
         })

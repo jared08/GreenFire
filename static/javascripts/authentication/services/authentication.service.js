@@ -1,6 +1,6 @@
 angular.module('greenfire.authentication.services').factory('AuthService',
-  ['$q', '$timeout', '$http',
-  function ($q, $timeout, $http) {
+  ['$q', '$timeout', '$http', '$cookies',
+  function ($q, $timeout, $http, $cookies) {
 
     var account_email;
     var account_cash;
@@ -16,52 +16,84 @@ angular.module('greenfire.authentication.services').factory('AuthService',
     }
 
     function login(email, password) {
-      return $http.post('/api/v1/auth/login/',
-        {email: email, password: password})
-        .then(function(response) {
-	    account_email = response.data.email;
-	    account_cash = response.data.cash;
-	    console.log(response.data);
-	    console.log(response.data.is_admin);
-	    admin = response.data.is_admin;
-            return response.data;
-        });
+      return $http.post('/api/v1/auth/login/', {
+        email: email, password: password
+      }).then(loginSuccessFn, loginErrorFn);
 
+      function loginSuccessFn(data, status, headers, config) {
+        setAuthenticatedAccount(data.data);
+	account_email = data.data.email;
+	account_cash = data.data.cash;
+	admin = data.data.is_admin;
+
+        window.location = '/home';
+      }
+
+      function loginErrorFn(data, status, headers, config) {
+        console.error('bummer dude..');
+      }
+    }
+
+    function getAuthenticatedAccount() {
+      if (!$cookies.authenticatedAccount) {
+        return;
+      }
+      return JSON.parse($cookies.authenticatedAccount);
+    }
+
+    function isAuthenticated() {
+      return !!$cookies.authenticatedAccount;
+    }
+
+    function setAuthenticatedAccount(account) {
+      $cookies.authenticatedAccount = JSON.stringify(account);
+    }
+
+    function unauthenticate() {
+      delete $cookies.authenticatedAccount;
     }
 
     
     function logout() {
       return $http.post('/api/v1/auth/logout/')
-        .then(logoutSuccesFn, logoutErrorFn);
+        .then(logoutSuccessFn, logoutErrorFn);
     
 
-    function logoutSuccessFn(data, status, headers, config) {
-      AuthService.unauthenticate();
+      function logoutSuccessFn(data, status, headers, config) {
+        unauthenticate();
 
-      window.location = '/';
+        window.location = '/login';
+      }
+
+      function logoutErrorFn(data, status, headers, config) {
+        console.error('no bueno');
+      }
     }
 
-    function logoutErrorFn(data, status, headers, config) {
-      console.error('no bueno');
+  
+
+    function getEmail() {
+      return account_email;
     }
-  }
 
-  function getEmail() {
-    return account_email;
-  }
+    function getCash() {
+      console.log('inside AuthService.getCash()!!!');
+      console.log(account_cash);
+      return account_cash;
+    }
 
-  function getCash() {
-    return account_cash;
-  }
-
-  function isAdmin() {
-    return admin;
-  }
+    function isAdmin() {
+      return admin;
+    }
 
     
     return ({
         register: register,
 	login: login,
+	getAuthenticatedAccount: getAuthenticatedAccount,
+        isAuthenticated: isAuthenticated,
+	setAuthenticatedAccount: setAuthenticatedAccount,
+        unauthenticate: unauthenticate,
 	logout: logout,
 	getEmail: getEmail,
 	getCash: getCash,
