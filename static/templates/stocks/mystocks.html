@@ -12,7 +12,7 @@
     </thead>
     <tbody>
       <tr ng-repeat="stock in mystocklist">
-        <td>{{stock.name}}</td>
+	<td><a href="stocks/{{stock.name}}">{{stock.name}}</a></td>
 	<td>{{stock.quantity}}</td>
         <td>{{stock.price_of_purchase}}</td>
 	<td>{{stock.current_price}}</td>

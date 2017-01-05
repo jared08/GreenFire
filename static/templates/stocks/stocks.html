@@ -9,7 +9,7 @@
     </thead>
     <tbody>
       <tr ng-repeat="stock in stocklist">
-        <td>{{stock.name}}</td>
+        <td><a href="stocks/{{stock.name}}">{{stock.name}}</a></td>
         <td>{{stock.current_price}}</td>
         <td>
           <button class="btn btn-primary" ng-click="setStock(stock)" data-toggle="modal" data-target="#buyStockModal">Buy</button>
