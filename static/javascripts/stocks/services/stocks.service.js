@@ -2,13 +2,6 @@ angular.module('greenfire.stocks.services').factory('StocksService',
   ['$http',
   function ($http) {   
     
-     function allStocks() {
-      return $http.get('/api/v1/stocks/')
-        .then(function(response) {
-              return response.data;
-            });
-    }
-	
     function myStocks(username) {
        var parameters = {
          username: username
@@ -19,6 +12,26 @@ angular.module('greenfire.stocks.services').factory('StocksService',
 	  .then(function(response) {
 	     return response.data;
 	  });
+    }
+
+    function allStocks() {
+	console.log('getting all stocks!!!!!!');
+      return $http.get('/api/v1/stocks/')
+        .then(function(response) {
+              return response.data;
+            });
+    }
+
+    function getStock(stock) {
+      var parameters = {
+         stock: stock
+       };
+
+      return $http.get('/api/v1/stocks/',
+        {params: parameters})
+        .then(function(response) {
+              return response.data;
+            });
     }
 
     function buy(username, stock) {
@@ -72,8 +85,9 @@ angular.module('greenfire.stocks.services').factory('StocksService',
 
 
     return ({
-      allStocks: allStocks,
       myStocks: myStocks,
+      allStocks: allStocks,
+      getStock: getStock,
       buy: buy,
       sell: sell,
       add: add,

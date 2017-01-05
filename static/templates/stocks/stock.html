@@ -1,3 +1,7 @@
 <div class="row" ng-controller="StockController">
-  <h1>{{stock}}<h1>
+  <h4>{{stock.name}}</h4>
+  <p>{{stock.price}}</p>
+  <button class="btn btn-primary" ng-click="setStock(stock)">Buy</button>
+  <button class="btn btn-primary" ng-click="setStock(stock)">Sell</button>
+
 </div>
