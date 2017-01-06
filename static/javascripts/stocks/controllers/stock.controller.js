@@ -1,15 +1,14 @@
 angular.module('greenfire.stock.controllers').controller('StockController',
   ['$scope', '$location', '$routeParams', 'AuthService', 'StocksService',
   function ($scope, $location, $routeParams, AuthService, StocksService) {
-    console.log('HELLLOOO');
     var param = $routeParams.param1;
 
     //needs to be instantiated in order to set stock.name
     $scope.stock = {};
     $scope.stock.name = param;
 
-    var getStock = function () {
-      StocksService.getStock(param)
+    var getStockInfo = function () {
+      StocksService.getStockInfo(param)
         .then(function (data) {
 	  console.log('GOT A RESPONSE!!');
 	  console.log(data);
@@ -23,8 +22,19 @@ angular.module('greenfire.stock.controllers').controller('StockController',
         });
     }
 
-    getStock();
+    getStockInfo();
 
+    $scope.buyStock = function (stock) {
+      StocksService.setStock(stock);
+      StocksService.setType('buy');
+      $location.path('/transaction');
+    }
+
+    $scope.sellStock = function (stock) {
+      StocksService.setStock(stock);
+      StocksService.setType('sell');
+      $location.path('/transaction');
+    }
 
 }]);
 

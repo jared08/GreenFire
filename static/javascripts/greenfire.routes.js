@@ -31,6 +31,11 @@
       controllerAs: 'vm',
       templateUrl: '/static/templates/stocks/stock.html',
       access: {restricted: true}
+    }).when('/transaction', {
+      controller: 'TransactionController',
+      controllerAs: 'vm',
+      templateUrl: '/static/templates/stocks/transaction.html',
+      access: {restricted: true}
     }).when('/logout', {
       controller: 'LogoutController',
       controllerAs: 'vm',

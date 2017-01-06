@@ -20,56 +20,16 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
 
     getAllStocks();
 
-    $scope.buyStock = function () {
-      if (!$scope.stock) {
-        console.log('you didnt add a quantity?')
-        return;
-      }
-      stock_to_change.quantity = $scope.stock.quantity;
-      StocksService.buy(user.email, stock_to_change)
-       .then(function (data) {
-         $scope.stock.quantity = '';
-         $scope.disabled = false;
-       })
-       .catch(function () {
-         console.log('ERROR~~');
-         $scope.error = true;
-         $scope.errorMessage = "Unable to purchase..";
-         $scope.disabled = false;
-       });
+    $scope.buyStock = function (stock) {
+      StocksService.setStock(stock);
+      StocksService.setType('buy');
+      $location.path('/transaction');
     }
 
-    $scope.sellStock = function () {
-      if (!$scope.stock) {
-        console.log('you didnt add a quantity?')
-        return;
-      }
-      stock_to_change.quantity = $scope.stock.quantity;
-      console.log('trying to sell: ' + stock_to_change);
-      StocksService.sell(user.email, stock_to_change)
-       .then(function (data) {
-         $scope.cash = data.cash;
-         var value = $scope.cash;
-         for (var i = 0; i < data.stocks.length; i++) {
-           value = value + (data.stocks[i].quantity * data.stocks[i].current_price);
-         }
-         $scope.value = value;
-         $scope.mystocklist = data.stocks;
-
-         $scope.stock.quantity = '';
-         $scope.disabled = false;
-       })
-       .catch(function () {
-         console.log('ERROR!!!');
-         $scope.error = true;
-         $scope.errorMessage = "Unable to sell..";
-         $scope.disabled = false;
-       });
-    }
-
-    var stock_to_change;
-    $scope.setStock = function(stock) {
-      stock_to_change = stock;
+    $scope.sellStock = function (stock) {
+      StocksService.setStock(stock);
+      StocksService.setType('sell');
+      $location.path('/transaction');
     }
 
     //for british eyes only
@@ -81,7 +41,6 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
        })
        .catch(function () {
          console.log('ERROR!!!');
-         getMyStocks();
          $scope.error = true;
          $scope.errorMessage = "Unable to add stock..";
          $scope.disabled = false;
@@ -98,7 +57,7 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
        .catch(function () {
          console.log('ERROR!!!');
          $scope.error = true;
-         $scope.errorMessage = "Unable to add stock..";
+         $scope.errorMessage = "Unable to edit stock..";
          $scope.disabled = false;
        });
     }
@@ -113,7 +72,7 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
          console.log('ERROR!!!');
          getMyStocks();
          $scope.error = true;
-         $scope.errorMessage = "Unable to add stock..";
+         $scope.errorMessage = "Unable to delete stock..";
          $scope.disabled = false;
        });
     }

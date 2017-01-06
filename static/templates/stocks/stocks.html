@@ -11,9 +11,8 @@
       <tr ng-repeat="stock in stocklist">
         <td><a href="stocks/{{stock.name}}">{{stock.name}}</a></td>
         <td>{{stock.current_price}}</td>
-        <td>
-          <button class="btn btn-primary" ng-click="setStock(stock)" data-toggle="modal" data-target="#buyStockModal">Buy</button>
-        </td>
+	<td><button class="btn btn-success" ng-click="buyStock(stock)">Buy</button></td>
+        <td><button class="btn btn-danger" ng-click="sellStock(stock)">Sell</button></td>
         <td>
           <div ng-hide={{!is_admin}}>
             <button class="btn btn-warning" ng-click="setStock(stock)" data-toggle="modal" data-target="#editStockModal">Edit Stock</button>
@@ -31,45 +30,7 @@
   <div ng-hide={{!is_admin}}>
     <button class="btn btn-success" data-toggle="modal" data-target="#addStockModal">Add Stock</button>
   </div>
-
-  <div class="modal" id="buyStockModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Buy Stock</h4>
-        </div>
-        <div class="modal-body">
-          <label>Quantity</label>
-          <input id="buy_input" type="number" class="form-control" name="price" ng-model="stock.quantity" required>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="buyStock()">Buy</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="modal" id="sellStockModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Sell Stock</h4>
-        </div>
-        <div class="modal-body">
-          <label>Quantity</label>
-          <input id="sell_input" type="number" class="form-control" name="price" ng-model="stock.quantity" required>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="sellStock()">Sell</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  
   <div class="modal" id="addStockModal" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">

@@ -1,0 +1,26 @@
+<div class="row" ng-controller="TransactionController">
+  <h4>trying to {{type}} {{stock.name}}</h4>
+  <label>Quantity</label>
+    <input id="buy_input" type="number" class="form-control" name="price" ng-model="quantity" required>
+  <button class="btn btn-success" data-toggle="modal" data-target="#confirmModal">Submit</button>
+
+  <div class="modal" id="confirmModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to {{type}} {{quantity}} shares of the {{stock.name}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="confirm()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

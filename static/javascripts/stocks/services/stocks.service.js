@@ -2,6 +2,9 @@ angular.module('greenfire.stocks.services').factory('StocksService',
   ['$http',
   function ($http) {   
     
+    var current_stock = {};
+    var current_type = '';
+
     function myStocks(username) {
        var parameters = {
          username: username
@@ -22,13 +25,39 @@ angular.module('greenfire.stocks.services').factory('StocksService',
             });
     }
 
-    function getStock(stock) {
+    function getStockInfo(stock) {
       var parameters = {
          stock: stock
        };
 
       return $http.get('/api/v1/stocks/',
         {params: parameters})
+        .then(function(response) {
+              return response.data;
+            });
+    }
+
+    function getStock() {
+      return current_stock;
+    }
+	
+
+    function setStock(stock) {
+      current_stock = stock;
+    }
+
+    function getType() {
+      return current_type;
+    }
+
+    function setType(type) {
+      current_type = type;
+    }
+
+
+    function transact(username, stock, type) {
+       return $http.put('/api/v1/mystocks/',
+        {username: username, stock: stock, method: type})
         .then(function(response) {
               return response.data;
             });
@@ -49,6 +78,9 @@ angular.module('greenfire.stocks.services').factory('StocksService',
               return response.data;
             });
     }
+
+
+    //for british eyes only
 
     function add(name, price) {
       return $http.post('/api/v1/stocks/',
@@ -87,7 +119,12 @@ angular.module('greenfire.stocks.services').factory('StocksService',
     return ({
       myStocks: myStocks,
       allStocks: allStocks,
+      getStockInfo: getStockInfo,
+      transact: transact,
       getStock: getStock,
+      setStock: setStock,
+      getType: getType,
+      setType: setType,
       buy: buy,
       sell: sell,
       add: add,

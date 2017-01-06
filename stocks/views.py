@@ -26,9 +26,11 @@ class StockViewSet(viewsets.ModelViewSet):
    def list(self, request):
         stock_name = request.GET.get('stock', '')
 	if (stock_name == ''): #getting data for all stocks
-	  queryset = Stock.objects.filter(quantity=None).order_by('name')
+	  #queryset = Stock.objects.filter(quantity=None).order_by('name')
+	  queryset = Stock.objects.order_by('name')
 	else: #getting data for one particular stock
-          queryset = self.queryset.filter(quantity=None, name=stock_name)
+          #queryset = self.queryset.filter(quantity=None, name=stock_name)
+	  queryset = self.queryset.filter(name=stock_name)
 
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
