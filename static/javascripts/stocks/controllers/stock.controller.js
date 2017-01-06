@@ -10,8 +10,6 @@ angular.module('greenfire.stock.controllers').controller('StockController',
     var getStockInfo = function () {
       StocksService.getStockInfo(param)
         .then(function (data) {
-	  console.log('GOT A RESPONSE!!');
-	  console.log(data);
           $scope.stock = data[0]
           $scope.disabled = false;
         })

@@ -18,7 +18,6 @@ angular.module('greenfire.stocks.services').factory('StocksService',
     }
 
     function allStocks() {
-	console.log('getting all stocks!!!!!!');
       return $http.get('/api/v1/stocks/')
         .then(function(response) {
               return response.data;

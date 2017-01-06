@@ -14,11 +14,33 @@ angular.module('greenfire.transaction.controllers').controller('TransactionContr
          //if user decides to change
       //$scope.stock =
       //$scope.type =
+
+      if (type == 'buy') {
+	if ((stock.current_price * $scope.quantity) > user.cash) {
+	  console.log('you do not have enough money..');
+	  return;
+	} 
+      } else {
+	for (var i = 0; i < user.stocks.length; i++) {
+	  if (user.stocks[i].name == stock.name) {
+	    var stock_from_account = user.stocks[i];
+	  }
+	}
+	if (stock_from_account) {
+	  if($scope.quantity > stock_from_account.quantity) {
+	    console.log('selling more stock than you own..');
+	    return;
+	  }
+	} else {
+	   console.log('trying to sell stock you do not have..');
+	   return;
+	}
+      }
+
       stock.quantity = $scope.quantity;
 
       StocksService.transact(user.email, stock, type)
         .then(function (data) {
-          console.log('GOT A RESPONSE!!');
 
           StocksService.setStock('');
           StocksService.setType('');
