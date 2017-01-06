@@ -25,11 +25,15 @@ class StockViewSet(viewsets.ModelViewSet):
 
    def list(self, request):
         stock_name = request.GET.get('stock', '')
-
+	print('before statements')
 	if (stock_name == ''):
-	  queryset = Stock.objects.order_by('name')
+	  queryset = Stock.objects.filter(quantity=None).order_by('name')
+	  print('hey')
 	else:
-          queryset = self.queryset.filter(name=stock_name)
+	  print('before')
+          queryset = self.queryset.filter(quantity=None, name=stock_name)
+	  print('after')
+	  print(queryset)
 
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
@@ -104,7 +108,7 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 	   else:
 	     new_stock = Stock.objects.get(name=stock_name)
              new_stock.quantity = quantity
-             new_stock.save()
+             #new_stock.save()
 	   
              account.stocks.add(new_stock)
 	     account.save()
