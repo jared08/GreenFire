@@ -39,7 +39,7 @@ class Account(AbstractBaseUser):
 
     cash = models.IntegerField(default=25000)
 
-    stocks = models.ManyToManyField(Stock)
+    stocks = models.ManyToManyField(Stock, through='AccountStock')
 
     is_admin = models.BooleanField(default=False)
 
@@ -59,3 +59,10 @@ class Account(AbstractBaseUser):
 
     def get_short_name(self):
         return self.first_name
+
+class AccountStock(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+
+    price_of_purchase = models.IntegerField()
+    quantity = models.IntegerField()

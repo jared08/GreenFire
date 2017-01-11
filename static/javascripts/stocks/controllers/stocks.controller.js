@@ -77,6 +77,11 @@ angular.module('greenfire.stocks.controllers').controller('StocksController',
        });
     }
 
+    var stock_to_change;
+    $scope.setStock = function(stock) {
+      stock_to_change = stock;
+    }
+
 }]);
 
 

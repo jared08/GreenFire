@@ -11,6 +11,7 @@ angular.module('greenfire.transaction.controllers').controller('TransactionContr
     $scope.type = type;
     
     $scope.confirm = function() {
+	console.log('INSIDE CONFIRM')
          //if user decides to change
       //$scope.stock =
       //$scope.type =
@@ -21,6 +22,7 @@ angular.module('greenfire.transaction.controllers').controller('TransactionContr
 	  return;
 	} 
       } else {
+	
 	for (var i = 0; i < user.stocks.length; i++) {
 	  if (user.stocks[i].name == stock.name) {
 	    var stock_from_account = user.stocks[i];
@@ -38,7 +40,7 @@ angular.module('greenfire.transaction.controllers').controller('TransactionContr
       }
 
       stock.quantity = $scope.quantity;
-
+      console.log('trying to: ' + type);
       StocksService.transact(user.email, stock, type)
         .then(function (data) {
 

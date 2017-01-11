@@ -6,6 +6,9 @@ from rest_framework.decorators import api_view
 from authentication.models import Account
 from authentication.serializers import AccountSerializer
 
+from authentication.models import AccountStock
+from authentication.serializers import AccountStockSerializer
+
 from stocks.models import Stock
 from stocks.serializers import StockSerializer
 
@@ -16,9 +19,7 @@ class StockViewSet(viewsets.ModelViewSet):
    def create(self, request):
         stock_name = request.data.get('name', '')
         stock_price = request.data.get('price', '')
-
         Stock.objects.create(name=stock_name, current_price=stock_price)
-	
 	queryset = self.queryset.filter(name=stock_name)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
@@ -58,14 +59,20 @@ class StockViewSet(viewsets.ModelViewSet):
 
 
 class AccountStocksViewSet(viewsets.ModelViewSet):
-    queryset = Account.objects.select_related('username').all()
+    #queryset = Account.objects.select_related('username').all()
+    queryset = AccountStock.objects.select_related('account').all()
 
-    serializer_class = AccountSerializer
+    #serializer_class = AccountSerializer
+    serializer_class = AccountStockSerializer
 
     def list(self, request):
 	username = request.GET.get('username', '')
-        queryset = self.queryset.filter(email=username)
+	account = Account.objects.get(email=username)
+
+        queryset = self.queryset.filter(account=account)
+	print(queryset)
         serializer = self.serializer_class(queryset, many=True)
+	print(serializer)
         return Response(serializer.data)
 
 
@@ -84,40 +91,32 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 	   price = stock_from_db.current_price;
 	   #eventually unlock
 
-	   #aka user already owns that stock and is buying more
-	   if (account.stocks.filter(name=stock_name)):
-	     old_quantity = account.stocks.filter(name=stock_name)[0].quantity
-	     new_quantity = old_quantity + quantity
+	   #checks if user already owns the stock and needs to buy more or buy for the first time
+           if (AccountStock.objects.filter(account=account, stock=stock_from_db).exists()):
+	     old_stock = AccountStock.objects.get(account=account, stock=stock_from_db)
+	     old_quantity = old_stock.quantity
+	     old_stock.quantity = old_quantity + quantity
 
-	     account.stocks.filter(name=stock_name).update(quantity=new_quantity)
-	     account.save()
-
-	     old_price_of_purchase = account.stocks.filter(name=stock_name)[0].price_of_purchase
-	     old_value = old_price_of_purchase * old_quantity
-	
+	     old_value = old_stock.price_of_purchase * old_quantity
 	     new_value = price * quantity
-
-	     calculated_price_of_purchase = (old_value + new_value) / (old_quantity + quantity) 
-	     account.stocks.filter(name=stock_name).update(price_of_purchase=calculated_price_of_purchase)
-	     account.save()
-
-
-	   else:
-	     new_stock = Stock.objects.get(name=stock_name)
-             new_stock.quantity = quantity
-	     new_stock.price_of_purchase = price
+	     calculated_price_of_purchase = (old_value + new_value) / (old_quantity + quantity)
+	     old_stock.save()
+           else:
+             new_stock = AccountStock.objects.create(account=account, stock=stock_from_db, price_of_purchase=price, quantity=quantity)
              new_stock.save()
-	   
-             account.stocks.add(new_stock)
-	     account.save()
 	
 	   total = quantity * price
 
 	   account.cash = account.cash - total;
 	   account.save()
+	   print('bought everything')
+	   queryset = self.queryset.filter(account=account)
+           print(queryset)
+           serializer = self.serializer_class(queryset, many=True)
+           print(serializer.data)
 
-           queryset = self.queryset.filter(email=username)
-           serializer = self.serializer_class(queryset[0])
+           #queryset = self.queryset.filter(email=username)
+           #serializer = self.serializer_class(queryset[0])
            return Response(serializer.data)
 
 	else:
@@ -133,17 +132,18 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
            price = stock_from_db.current_price;
            #eventually unlock
 
+	   stock = AccountStock.objects.filter(account=account, stock=stock_from_db)
+	   print(stock.quantity)
 	   #aka not selling all of the stock
-	   if (account.stocks.filter(name=stock_name)[0].quantity > quantity):
-	     temp = account.stocks.filter(name=stock_name)
-             new_quantity = temp[0].quantity - quantity
-	     
-	     account.stocks.filter(name=stock_name).update(quantity=new_quantity)
-	     account.save()
+	   if (stock.quantity > quantity):
+	     print('trying to sell some')
+	     print(stock.quantity)
+	     stock.quantity = stock.quantity - quantity
+	     stock.save()
+	     print(stock.quantity)
 	   else:
-	     stock = Stock.objects.get(name=stock_name)
-	     account.stocks.remove(stock)
-	     account.save()
+	     print('trying to sell all')
+	     stock.remove()
 
 	   total = quantity * price
 
