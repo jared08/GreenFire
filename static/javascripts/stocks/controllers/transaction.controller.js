@@ -16,7 +16,7 @@ angular.module('greenfire.transaction.controllers').controller('TransactionContr
       //$scope.stock =
       //$scope.type =
 
-      if (type == 'buy') {
+/*      if (type == 'buy') {
 	if ((stock.current_price * $scope.quantity) > user.cash) {
 	  console.log('you do not have enough money..');
 	  return;
@@ -38,9 +38,8 @@ angular.module('greenfire.transaction.controllers').controller('TransactionContr
 	   return;
 	}
       }
-
+*/ //TODO redo this somehow or make check in the backend
       stock.quantity = $scope.quantity;
-      console.log('trying to: ' + type);
       StocksService.transact(user.email, stock, type)
         .then(function (data) {
 
@@ -51,6 +50,7 @@ angular.module('greenfire.transaction.controllers').controller('TransactionContr
         })
         .catch(function () {
           $scope.error = true;
+	  console.log('unable to make transaction..');
           $scope.errorMessage = "Unable to make transaction...";
           $scope.disabled = false;
         });

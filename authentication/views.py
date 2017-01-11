@@ -11,7 +11,6 @@ class AccountViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
 
     def get_permissions(self):
-	print('GETTING PERMISSIONS')
         if self.request.method in permissions.SAFE_METHODS:
             return (permissions.AllowAny(),)
 
@@ -22,7 +21,6 @@ class AccountViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
-	print(serializer)
         if serializer.is_valid():
             Account.objects.create_user(**serializer.validated_data)
 
@@ -49,22 +47,16 @@ class LoginView(views.APIView):
 
         email = data.get('email', None)
         password = data.get('password', None)
-	print(email)
-	print(password)
 
         account = authenticate(email=email, password=password)
 
-	print(account)
 	check = account.is_authenticated
-	print(check)
-	print('ay')
 
         if account is not None:
             if account.is_active:
                 login(request, account)
 
                 serialized = AccountSerializer(account)
-		print(serialized)
                 return Response(serialized.data)
             else:
                 return Response({
@@ -83,8 +75,6 @@ from rest_framework import permissions
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    print('PERMISSION CLASSES IN LOGOUTVIEW')
-    print(permission_classes)
 
     def post(self, request, format=None):
         logout(request)

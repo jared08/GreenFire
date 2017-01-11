@@ -27,10 +27,8 @@ class StockViewSet(viewsets.ModelViewSet):
    def list(self, request):
         stock_name = request.GET.get('stock', '')
 	if (stock_name == ''): #getting data for all stocks
-	  #queryset = Stock.objects.filter(quantity=None).order_by('name')
 	  queryset = Stock.objects.order_by('name')
 	else: #getting data for one particular stock
-          #queryset = self.queryset.filter(quantity=None, name=stock_name)
 	  queryset = self.queryset.filter(name=stock_name)
 
         serializer = self.serializer_class(queryset, many=True)
@@ -59,10 +57,8 @@ class StockViewSet(viewsets.ModelViewSet):
 
 
 class AccountStocksViewSet(viewsets.ModelViewSet):
-    #queryset = Account.objects.select_related('username').all()
     queryset = AccountStock.objects.select_related('account').all()
 
-    #serializer_class = AccountSerializer
     serializer_class = AccountStockSerializer
 
     def list(self, request):
@@ -70,9 +66,7 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 	account = Account.objects.get(email=username)
 
         queryset = self.queryset.filter(account=account)
-	print(queryset)
         serializer = self.serializer_class(queryset, many=True)
-	print(serializer)
         return Response(serializer.data)
 
 
@@ -109,14 +103,9 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 
 	   account.cash = account.cash - total;
 	   account.save()
-	   print('bought everything')
 	   queryset = self.queryset.filter(account=account)
-           print(queryset)
            serializer = self.serializer_class(queryset, many=True)
-           print(serializer.data)
 
-           #queryset = self.queryset.filter(email=username)
-           #serializer = self.serializer_class(queryset[0])
            return Response(serializer.data)
 
 	else:
@@ -131,26 +120,23 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
            stock_from_db = Stock.objects.get(name=stock_name)
            price = stock_from_db.current_price;
            #eventually unlock
-
-	   stock = AccountStock.objects.filter(account=account, stock=stock_from_db)
-	   print(stock.quantity)
+	   
+	   stock = AccountStock.objects.get(account=account, stock=stock_from_db)
+	   
 	   #aka not selling all of the stock
 	   if (stock.quantity > quantity):
-	     print('trying to sell some')
-	     print(stock.quantity)
 	     stock.quantity = stock.quantity - quantity
 	     stock.save()
-	     print(stock.quantity)
 	   else:
-	     print('trying to sell all')
-	     stock.remove()
+	     stock.delete()
 
 	   total = quantity * price
 
 	   account.cash = account.cash + total
 	   account.save()
 
-	   queryset = self.queryset.filter(email=username)
-	   serializer = self.serializer_class(queryset[0])
+           queryset = self.queryset.filter(account=account)
+           serializer = self.serializer_class(queryset, many=True)
+
 	   return Response(serializer.data)
 

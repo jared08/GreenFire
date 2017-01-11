@@ -10,8 +10,6 @@ class AccountSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
     confirm_password = serializers.CharField(write_only=True, required=False)
 
-#    stocks = AccountStockSerializer(source='accountstock_set', many=True)
-
     class Meta:
         model = Account
         fields = ('id', 'email', 'username', 'created_at', 'updated_at',
@@ -19,13 +17,9 @@ class AccountSerializer(serializers.ModelSerializer):
                   'confirm_password', 'is_admin',)
         read_only_fields = ('created_at', 'updated_at',)
         def create(self, validated_data):
-	    print('inside the create serializer!')
-	    print(validated_data)
             return Account.objects.create(**validated_data)
 
         def update(self, instance, validated_data):
-	    print('inside update!')
-	    print(validated_data)
             instance.username = validated_data.get('username', instance.username)
 	    instance.stocks = validated_data.get('stocks', instance.stocks)
 
@@ -44,8 +38,6 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def get_validation_exclusions(self, *args, **kwargs):
        exclusions = super(AccountSerializer, self).get_validation_exclusions()
-       print('IN GET VALIDATION EXCLUSIONS!!')
-       print(exclusions)
        return exclusions
 
 class AccountStockSerializer(serializers.ModelSerializer):

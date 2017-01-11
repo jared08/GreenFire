@@ -12,13 +12,13 @@
     </thead>
     <tbody>
       <tr ng-repeat="stock in mystocklist">
-	<td><a href="stocks/{{stock.name}}">{{stock.name}}</a></td>
+	<td><a href="stocks/{{stock.stock.name}}">{{stock.stock.name}}</a></td>
 	<td>{{stock.quantity}}</td>
         <td>{{stock.price_of_purchase}}</td>
-	<td>{{stock.current_price}}</td>
-	<td>{{stock.current_price * stock.quantity}}</td>
-	<td><button class="btn btn-success" ng-click="buyStock(stock)">Buy</button></td>
-	<td><button class="btn btn-danger" ng-click="sellStock(stock)">Sell</button></td>
+	<td>{{stock.stock.current_price}}</td>
+	<td>{{stock.stock.current_price * stock.quantity}}</td>
+	<td><button class="btn btn-success" ng-click="buyStock(stock.stock)">Buy</button></td>
+	<td><button class="btn btn-danger" ng-click="sellStock(stock.stock)">Sell</button></td>
       </tr>
     </tbody>
   </table>
