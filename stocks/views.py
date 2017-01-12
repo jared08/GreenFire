@@ -64,9 +64,14 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
     def list(self, request):
 	username = request.GET.get('username', '')
 	account = Account.objects.get(email=username)
-
         queryset = self.queryset.filter(account=account)
-        serializer = self.serializer_class(queryset, many=True)
+	if (queryset):
+	  serializer = self.serializer_class(queryset, many=True)
+	else: #doesn't have any stocks so we just return account
+	  serializer_class = AccountSerializer
+	  serializer = self.serializer_class(account, many=False)
+	  print(serializer)
+	  print(serializer.data)
         return Response(serializer.data)
 
 
@@ -83,6 +88,10 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 	   #eventually lock
 	   stock_from_db = Stock.objects.get(name=stock_name)
 	   price = stock_from_db.current_price;
+
+	   #will definitely need to be changed
+	   stock_from_db.current_price = price + (0.01 * quantity)
+	   stock_from_db.save()
 	   #eventually unlock
 
 	   #checks if user already owns the stock and needs to buy more or buy for the first time
@@ -119,6 +128,10 @@ class AccountStocksViewSet(viewsets.ModelViewSet):
 	   #eventually lock
            stock_from_db = Stock.objects.get(name=stock_name)
            price = stock_from_db.current_price;
+
+	   #will definitely need to be changed
+           stock_from_db.current_price = price - (0.01 * quantity)
+	   stock_from_db.save()
            #eventually unlock
 	   
 	   stock = AccountStock.objects.get(account=account, stock=stock_from_db)

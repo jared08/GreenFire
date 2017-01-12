@@ -37,7 +37,7 @@ class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=40, blank=True)
     last_name = models.CharField(max_length=40, blank=True)
 
-    cash = models.IntegerField(default=25000)
+    cash = models.FloatField(default=25000)
 
     stocks = models.ManyToManyField(Stock, through='AccountStock')
 
@@ -64,5 +64,5 @@ class AccountStock(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
 
-    price_of_purchase = models.IntegerField()
+    price_of_purchase = models.FloatField()
     quantity = models.IntegerField()
